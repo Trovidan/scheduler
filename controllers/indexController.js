@@ -57,13 +57,10 @@ module.exports.createList = async function (req, res) {
       let item = await Item.findOne({
         $and: [{ participants: { $in: req.body.pid } }, {
           $or: [{
-            $and: [{ startTime: { $lte: startDate } }, { $and: [{ endTime: { $gte: startDate } }, { endTime: { $lte: endDate } }] }]
+            $and: [{ startTime: { $lte: startDate } }, { $and: [{ endTime: { $gte: startDate } }] }]
           },
           {
-            $and: [{ $and: [{ startTime: { $gte: startDate } }, { startTime: { $lte: endDate } }] }, { endTime: { $gte: endDate } }]
-          },
-          {
-            $and: [{ startTime: { $gte: startDate } }, { endTime: { $lte: endDate } }]
+            $and: [{ $and: [{ startTime: { $gte: startDate } }, { startTime: { $lte: endDate } }] }]
           }]
         }]
       }
@@ -127,7 +124,8 @@ module.exports.addParticipant = async (req, res) => {
     if (err) {
       console.log('error in creating', err);
       return res.status(500).json({
-        message: 'Internal server error'
+        message: 'Internal server error',
+        reqItem: req
       });
     }
   }

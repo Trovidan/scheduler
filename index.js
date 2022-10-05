@@ -13,6 +13,8 @@ app.use(session({
   resave: true
 }));
 
+app.use(express.json());
+
 app.use(flash());
 
 app.use(function (req, res, next) {
